@@ -1,0 +1,25 @@
+{
+	"trailingComma": "es5",
+	"tabWidth": 4,
+	"printWidth": 200,
+	"semi": true,
+	"singleQuote": true,
+	"bracketSpacing": true,
+	"useTabs": true,
+	"tslintIntegration": true,
+	"eslintIntegration": true,
+	"overrides": [
+		{
+			"files": "*.svelte",
+			"options": {
+				"parser": "svelte",
+				"htmlWhitespaceSensitivity": "css"
+			}
+		}
+	],
+	"svelteSortOrder": "options-scripts-markup-styles",
+	"svelteStrictMode": false,
+	"svelteBracketNewLine": true,
+	"svelteAllowShorthand": true,
+	"svelteIndentScriptAndStyle": true
+}
