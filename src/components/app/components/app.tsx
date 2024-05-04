@@ -37,7 +37,7 @@ function App(props) {
 	return (
 		<div className="main-container main-bg">
 			<div className="content-container">
-				<TopPane />
+				{/* <TopPane /> */}
 				<Outlet />
 				<ToastContainer />
 			</div>

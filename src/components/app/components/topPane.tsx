@@ -147,6 +147,7 @@ function TopPane(props) {
         </div>
 
         <div className={classNames("menu-item py-12", {"active": pathname === HOME_PATH})} onClick={() => onMenuItemClick(HOME_PATH)}>Home</div>
+        <div className={classNames("menu-item py-12", {"active": pathname === ABOUT_PATH})} onClick={() => onMenuItemClick(ABOUT_PATH)}>Battle</div>
         <div className={classNames("menu-item py-12", {"active": pathname === ABOUT_PATH})} onClick={() => onMenuItemClick(ABOUT_PATH)}>About</div>
         <div className={classNames("menu-item py-12", {"active": pathname === CONTACT_PATH})} onClick={() => onMenuItemClick(CONTACT_PATH)}>Contact</div>
       </div>}

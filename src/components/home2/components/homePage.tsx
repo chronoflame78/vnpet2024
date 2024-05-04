@@ -20,7 +20,7 @@ class HomePage extends React.Component<Props, any> {
 	render() {
 		const { restricted } = this.props;
 		return (<div className="home-container">
-      <BattleScreen/>
+      <h1>VN Pet</h1>
     </div>);
 	}
 }
