@@ -7,6 +7,7 @@ import water1 from '../../../assets/water-1.png';
 import { Pet, Skill, TYPES } from '../../../utils/constant';
 import * as SvgIcons from '../../../styles/svgIcons';
 import * as _ from 'lodash';
+import { TypingAnimationText } from '../typingAnimationText/typingAnimationText';
 
 interface Props {}
 
@@ -15,6 +16,7 @@ interface State {
 	isSkillMenuOpen: boolean;
 	isItemMenuOpen: boolean;
 	isSwitchMenuOpen: boolean;
+	actionText: string;
 	battleData: {
 		ally: Pet;
 		enemy: Pet;
@@ -29,6 +31,7 @@ class BattleScreen extends React.Component<Props, State> {
 			isSkillMenuOpen: false,
 			isItemMenuOpen: false,
 			isSwitchMenuOpen: false,
+			actionText: '',
 			battleData: {
 				ally: {} as Pet,
 				enemy: {} as Pet,
@@ -70,7 +73,9 @@ class BattleScreen extends React.Component<Props, State> {
 				],
 			},
 		};
-		this.setState({ battleData });
+
+		const initText = `A wild ${battleData.enemy.name} appeared!`;
+		this.setState({ battleData, actionText: initText });
 	}
 
 	getSkillList = () => {
@@ -89,23 +94,56 @@ class BattleScreen extends React.Component<Props, State> {
 		}
 	};
 
+	executeRandomAction = (actions) => {
+		if (!Array.isArray(actions) || actions.length === 0) {
+			return;
+		}
+	
+		// Generate a random index based on the length of the validCallbacks array
+		const randomIndex = Math.floor(Math.random() * actions.length);
+	
+		// Execute the callback at the random index
+		actions[randomIndex]();
+	}
+
+	getRandomSkill= (skills) => {
+		if (!Array.isArray(skills) || skills.length === 0) {
+			return;
+		}
+
+		const randomIndex = Math.floor(Math.random() * skills.length);
+	
+		return skills[randomIndex];
+	}
+
 	performAttack = (isAlly: boolean) => {
 		const { battleData } = this.state;
 		const { ally, enemy } = battleData;
 		const newAllyData = _.cloneDeep(ally);
 		const newEnemyData = _.cloneDeep(enemy);
+		const actionText = isAlly ? `${ally.name} used attack!` : `${enemy.name} used attack!`;
 		if (isAlly) {
 			newEnemyData.curr_health = enemy.curr_health - ally.phy_atk;
 			if (newEnemyData.curr_health < 0) {
 				newEnemyData.curr_health = 0;
 			}
+			this.setState({ battleData: { ally: newAllyData, enemy: newEnemyData }, actionText, isActionMenuOpen: false, isSkillMenuOpen: false });
+
+			setTimeout(() => {
+				this.executeRandomAction([() => this.performAttack(false), () => this.performSkillMove(false, this.getRandomSkill(enemy.skillList))]);
+			}, 1500);
 		} else {
 			newAllyData.curr_health = ally.curr_health - enemy.phy_atk;
 			if (newAllyData.curr_health < 0) {
 				newAllyData.curr_health = 0;
 			}
+			this.setState({ battleData: { ally: newAllyData, enemy: newEnemyData }, actionText, isActionMenuOpen: false, isSkillMenuOpen: false });
+
+			setTimeout(() => {
+				this.setState({ isActionMenuOpen: true, isSkillMenuOpen: false });
+			}, 1500);
 		}
-		this.setState({ battleData: { ally: newAllyData, enemy: newEnemyData } });
+		
 	};
 
 	performSkillMove = (isAlly: boolean, skill: Skill) => {
@@ -113,25 +151,37 @@ class BattleScreen extends React.Component<Props, State> {
 		const { ally, enemy } = battleData;
 		const newAllyData = _.cloneDeep(ally);
 		const newEnemyData = _.cloneDeep(enemy);
+		const actionText = isAlly ? `${ally.name} used ${skill.name}!` : `${enemy.name} used ${skill.name}!`;
 		if (isAlly) {
-            const skill_damage = skill.isSpecial ? ally.spe_atk * skill.multiplier : ally.phy_atk * skill.multiplier;
+			const skill_damage = skill.isSpecial ? ally.spe_atk * skill.multiplier : ally.phy_atk * skill.multiplier;
 			newEnemyData.curr_health = enemy.curr_health - skill_damage;
 			if (newEnemyData.curr_health < 0) {
 				newEnemyData.curr_health = 0;
 			}
+			this.setState({ battleData: { ally: newAllyData, enemy: newEnemyData }, actionText, isActionMenuOpen: false, isSkillMenuOpen: false});
+
+			setTimeout(() => {
+				this.executeRandomAction([() => this.performAttack(false), () => this.performSkillMove(false, this.getRandomSkill(enemy.skillList))]);
+			}, 1500);
 		} else {
-            const skill_damage = skill.isSpecial ? enemy.spe_atk * skill.multiplier : enemy.phy_atk * skill.multiplier;
+			const skill_damage = skill.isSpecial ? enemy.spe_atk * skill.multiplier : enemy.phy_atk * skill.multiplier;
 			newAllyData.curr_health = ally.curr_health - skill_damage;
 			if (newAllyData.curr_health < 0) {
 				newAllyData.curr_health = 0;
 			}
+
+			this.setState({ battleData: { ally: newAllyData, enemy: newEnemyData }, actionText, isActionMenuOpen: false, isSkillMenuOpen: false });
+
+			setTimeout(() => {
+				this.setState({ isActionMenuOpen: true, isSkillMenuOpen: false });
+			}, 1500);
 		}
-		this.setState({ battleData: { ally: newAllyData, enemy: newEnemyData } });
+		
 	};
 
 	render() {
 		const { isActionMenuOpen, isSkillMenuOpen } = this.state;
-		const { battleData } = this.state;
+		const { battleData, actionText } = this.state;
 		const { ally, enemy } = battleData;
 		console.log('rerendering');
 		console.log('enemy.current_health', enemy.curr_health);
@@ -150,7 +200,9 @@ class BattleScreen extends React.Component<Props, State> {
 				<div className="ally-health-bar">
 					<div className="health-bar" style={{ width: `${Math.round((ally.curr_health / ally.max_health) * 100)}%` }}></div>
 				</div>
-				<div className="action-text">A wild Charizard appear!</div>
+				<div className="action-text">
+					<TypingAnimationText text={actionText} speed={50} />
+				</div>
 				{isActionMenuOpen && (
 					<div className="action-menu">
 						<div className="menu-item" onClick={() => this.performAttack(true)}>

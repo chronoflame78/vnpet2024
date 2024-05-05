@@ -81,3 +81,15 @@
         padding-bottom: 20px;
     }
 }
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.typing-cursor {
+    display: inline-block;
+    margin-left: 0.1rem;
+    width: 8px;
+    background-color: black;
+    animation: blink 1s step-end infinite;
+}
