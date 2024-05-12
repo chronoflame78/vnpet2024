@@ -1,7 +1,7 @@
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { stateInterface } from "../../../store/appReducer";
-import BattlePage from "../components/battlePage"; 
+import BattleComponent from "../components/battleComponent"; 
 
 const mapStateToProps = (state: stateInterface) => {
   return {
@@ -13,4 +13,4 @@ const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({}, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BattlePage);
+export default connect(mapStateToProps, mapDispatchToProps)(BattleComponent);

@@ -27,21 +27,41 @@ export const TYPES = {
 };
 
 export interface Skill {
-    name: string;
-    type: string;
-    multiplier: number;
-    isSpecial?: boolean;
+	name: string;
+	type: string;
+	multiplier: number;
+	isSpecial?: boolean;
 }
 
 export interface Pet {
-    name: string;
-    type: string;
-    max_health: number;
-    curr_health: number;
-    phy_atk: number;
-    spe_atk: number;
-    def: number;
-    res: number;
-    speed: number;
-    skillList: Skill[];
+	name: string;
+	type: string;
+	max_health: number;
+	curr_health: number;
+	phy_atk: number;
+	spe_atk: number;
+	def: number;
+	res: number;
+	speed: number;
+	skillList: Skill[];
+}
+
+export interface ISquare {
+	hasMonster: boolean;
+	hasItem: boolean;
+	isEnterable: boolean;
+	type: SquareType;
+}
+
+export enum SquareType {
+	GRASS = 'GRASS',
+	WATER = 'WATER',
+	MOUNTAIN = 'MOUNTAIN',
+}
+
+export interface MapInfo {
+	name: string;
+	width: number;
+	height: number;
+	gridData: ISquare[][];
 }

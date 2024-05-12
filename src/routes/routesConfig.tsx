@@ -3,8 +3,9 @@ import {
 } from "react-router-dom";
 import App from "../components/app/containers/app";
 import ErrorPage from "../components/app/components/errorPage";
-import HomePage from "../components/home2/containers/homePage";
-import BattlePage from "../components/battle/containers/battlePage";
+import HomePage from "../components/home/containers/homePage";
+import BattleComponent from "../components/battle/containers/battleComponent";
+import MapComponent from "../components/map/containers/mapComponent";
   
 export const router = createBrowserRouter([
     {
@@ -19,7 +20,12 @@ export const router = createBrowserRouter([
         },
         {
           path: "battle",
-          element: <BattlePage />,
+          element: <BattleComponent />,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "map",
+          element: <MapComponent />,
           errorElement: <ErrorPage />,
         },
       ],

@@ -6,7 +6,7 @@ interface Props {
 
 }
 
-class BattlePage extends React.Component<Props, any> {
+class BattleComponent extends React.Component<Props, any> {
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -14,7 +14,7 @@ class BattlePage extends React.Component<Props, any> {
 
 	render() {
 		return (
-			<div className="battle-container position-relative">
+			<div className="battle-component-container position-relative">
 				<BattleScreen />
 			</div>
 		);
@@ -29,4 +29,4 @@ const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({}, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BattlePage);
+export default connect(mapStateToProps, mapDispatchToProps)(BattleComponent);
