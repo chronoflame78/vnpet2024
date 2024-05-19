@@ -63,5 +63,7 @@ export interface MapInfo {
 	name: string;
 	width: number;
 	height: number;
+	viewPortWidth: number;
+	viewPortHeight: number;
 	gridData: ISquare[][];
 }
